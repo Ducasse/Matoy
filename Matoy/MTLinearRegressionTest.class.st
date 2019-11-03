@@ -10,6 +10,18 @@ MTLinearRegressionTest >> data [
 	
 ]
 
+{ #category : #accessing }
+MTLinearRegressionTest >> data2x [
+	^ {1.47 . 1.50 . 1.52 . 1.55 . 1.57 . 1.60 . 1.63 . 1.65 . 1.68 . 1.70 . 1.73 . 1.75 . 1.78 . 1.80 . 1.83}
+	
+]
+
+{ #category : #accessing }
+MTLinearRegressionTest >> data2y [
+	^ {52.21 . 53.12 . 54.48 . 55.84 . 57.20 . 58.57 . 59.93 . 61.29 . 63.11 . 64.47 . 66.28 . 68.10 . 69.92 . 72.19 . 74.46}
+	
+]
+
 { #category : #tests }
 MTLinearRegressionTest >> testForXsAndYs [
 	
@@ -34,8 +46,16 @@ MTLinearRegressionTest >> testLinearizer [
 	
 	| l | 
 	l := MTLinearizer new for: self data.
-	self assert: l slope equals: 434 / 106.
-	self assert: l intercept equals: 174 / 106
+	self assert: (l yForX: 4) equals: 565/53 
+]
+
+{ #category : #tests }
+MTLinearRegressionTest >> testLinearizer2 [
+	
+	| l | 
+	l := MTLinearizer new forXs: self data2x andYs: self data2y.
+	self assert: l slope equals: 61.272186542107434.
+	self assert: l intercept equals: -39.061955918841036
 ]
 
 { #category : #tests }
@@ -105,4 +125,20 @@ MTLinearRegressionTest >> testYMean [
 	l compute. 
 	self assert: l yMean equals: 73/5.
 	
+]
+
+{ #category : #tests }
+MTLinearRegressionTest >> testxFory [
+	
+	| l | 
+	l := MTLinearizer new for: self data.
+	self assert: (l xForY: 61) equals: 104/3
+]
+
+{ #category : #tests }
+MTLinearRegressionTest >> testyForX [
+	
+	| l | 
+	l := MTLinearizer new for: self data.
+	self assert: (l yForX: 4) equals: 565/53 
 ]

@@ -5,9 +5,11 @@ It find
 	y := a x + b
 such that 
 
-a = (Sig(y) * Sig (x2) - Sig(x) * Sig (xy))	/ n * Sig (x2) - Sig(x)^2
+a = (n(Sig xy) - Sigx * Sigy ) / n Sig(x * x) - Sig(x)^2
+
+b = (Sig(y) * Sig (x2) - Sig(x) * Sig (xy))	/ n * Sig (x2) - Sig(x)^2
 	
-b = (n(Sig xy) - Sigx * Sigy ) / n Sig(x2) - Sig(x)^2
+
 "
 Class {
 	#name : #MTLinearizer,
@@ -76,13 +78,13 @@ MTLinearizer >> initialize [
 { #category : #api }
 MTLinearizer >> intercept [
 
-	^ (data size * sumXY - (sumX * sumY)) / (data size * sumX2 - sumX squared)
+	^ (sumY * sumX2 - (sumX * sumXY)) / (data size * sumX2 - sumX squared)
 ]
 
 { #category : #api }
 MTLinearizer >> slope [
 
-	^ (sumY * sumX2 - (sumX * sumXY)) / (data size * sumX2 - sumX squared)
+	^ (data size * sumXY - (sumX * sumY)) / (data size * sumX2 - sumX squared)
 ]
 
 { #category : #internals }
@@ -105,9 +107,21 @@ MTLinearizer >> sumY [
 	^ sumY
 ]
 
+{ #category : #api }
+MTLinearizer >> xForY: y [
+
+	^ (y - self intercept) / self slope 
+]
+
 { #category : #internals }
 MTLinearizer >> xMean [
 	^ xMean
+]
+
+{ #category : #api }
+MTLinearizer >> yForX: x [
+
+	^ (self slope * x) + self intercept
 ]
 
 { #category : #internals }
